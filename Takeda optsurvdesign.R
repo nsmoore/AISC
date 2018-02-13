@@ -106,7 +106,7 @@ x.jk.site <- x.jk.pt*
 x.jk <- 
 
 
-
+  # link from godwin https://www.r-bloggers.com/r-single-plot-with-two-different-y-axes/
 set.seed(2015-04-13)
 
 d = data.frame(x =seq(1,10),
@@ -127,3 +127,7 @@ legend("topleft",
        lty=c(1,0), pch=c(NA, 16), col=c("red3", "black"))
 
 #nick gone done this shiznit  
+
+#google doc for discussion and notes https://docs.google.com/document/d/1i_qgB1Vk772N2zQ6LkWKsvnmUSoscylPcbxLtF_MyyU/edit
+
+
