@@ -106,7 +106,8 @@ x.jk.site <- x.jk.pt*
 x.jk <- 
 
 
-  set.seed(2015-04-13)
+
+set.seed(2015-04-13)
 
 d = data.frame(x =seq(1,10),
                n = c(0,0,1,2,3,4,4,5,6,6),
@@ -124,4 +125,5 @@ mtext(side = 4, line = 3, 'Number genes selected')
 legend("topleft",
        legend=c(expression(-log[10](italic(p))), "N genes"),
        lty=c(1,0), pch=c(NA, 16), col=c("red3", "black"))
-  
+
+#nick gone done this shiznit  
