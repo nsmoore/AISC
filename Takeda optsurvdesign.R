@@ -92,7 +92,17 @@ lines(seq.sa[tab.ra10>=seq.sa], seq.sf10[tab.ra10>=seq.sa], col="blue", lwd=3)
 lines(seq.sa[tab.ra20>=seq.sa], seq.sf20[tab.ra20>=seq.sa], col="red", lwd=3)
 lines(seq.sa[tab.ra30>=seq.sa], seq.sf30[tab.ra30>=seq.sa],col="green", lwd=3)
 
-# cost
+#DEFINE NEW VARIABLES:
+#cost = per-study costs
+#costpt = per-patient costs ($59.5k/patient) = pt recruitment + pt retention + RN/clinical RA + MD + clinical procedure + labs
+#costsite = per-site costs ($50k/site), where x.jk.site = site recruitment + site retention + administrative staff + site monitoring + x.jk.pt * number of planned visits per site
+#costd = Cost of each day in the study ($37k/day)
+#Nsites = number of sites
+#r = average number of pts that can be accrued per site
+
+#Total cost of study 
+x.jk <- costpt*N + costd*S + costsite*Nsites
+
 # enroll_ppt
 # 
 # total_cost <- 
@@ -106,7 +116,7 @@ x.jk.site <- x.jk.pt*
 x.jk <- 
 
 
-  # link from godwin https://www.r-bloggers.com/r-single-plot-with-two-different-y-axes/
+
 set.seed(2015-04-13)
 
 d = data.frame(x =seq(1,10),
@@ -127,7 +137,3 @@ legend("topleft",
        lty=c(1,0), pch=c(NA, 16), col=c("red3", "black"))
 
 #nick gone done this shiznit  
-
-#google doc for discussion and notes https://docs.google.com/document/d/1i_qgB1Vk772N2zQ6LkWKsvnmUSoscylPcbxLtF_MyyU/edit
-
-
