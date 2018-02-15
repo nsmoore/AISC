@@ -40,7 +40,7 @@ seq.N.ra20 <- seq.sa*20
 seq.N.ra30 <- seq.sa*30
 
 #Total cost of study - Jon
-x.jk <- costpt*N + costd*S + costsite*Nsites
+#x.jk <- costpt*N + costd*S + costsite*Nsites
 
 #Total cost of study - Nick
 # x.jk <- (costrecruitment + S(costd) + costpt * r)*N/r
