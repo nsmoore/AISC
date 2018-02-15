@@ -120,8 +120,12 @@ designs <- tibble(
   
   cost=(costrecruitment + S*(costd) + costpt * r)*N/r
   
+  revenue =
+  
+  benefit
+  
 )
-
+# patient benefit https://www-ncbi-nlm-nih-gov.ezp-prod1.hul.harvard.edu/pmc/articles/PMC4854260/
 
 
 plot1 <- designs %>%
@@ -167,7 +171,20 @@ grid.draw(rbind(ggplotGrob(plot1),
 
 
 
+library(ggpubr)
 
+
+ggarrange(plot1,
+          
+          plot2,
+          
+          ncol=1,
+          
+          nrow=2,
+          
+          common.legend = TRUE,
+          
+          legend="right")
 
 
 ######
