@@ -18,22 +18,6 @@ seq.sf10 <-  tab.ra10 - seq.sa
 seq.sf20 <-  tab.ra20 - seq.sa
 seq.sf30 <-  tab.ra30 - seq.sa
 
-par(mfrow=c(1,2))
-plot(seq.sa, tab.ra10, type="l", col="gray", xlab="Sa", ylab="S", ylim=c(-20, 100), xlim=c(0, 50),xaxs="i",yaxs="i", main="S vs Sa", lwd=3)
-lines(seq.sa, tab.ra20,col="gray", lwd=3)
-lines(seq.sa, tab.ra30,col="gray", lwd=3)
-lines(seq.sa[tab.ra10>=seq.sa], tab.ra10[tab.ra10>=seq.sa], col="blue", lwd=3)
-lines(seq.sa[tab.ra20>=seq.sa], tab.ra20[tab.ra20>=seq.sa], col="red", lwd=3)
-lines(seq.sa[tab.ra30>=seq.sa], tab.ra30[tab.ra30>=seq.sa],col="green", lwd=3)
-
-plot(seq.sa, seq.sf10, type="l", col="gray", xlab="Sa", ylab="Sf", ylim=c(-20, 100), xlim=c(0, 50), xaxs="i", yaxs="i", main="Sf vs Sa", lwd=3)
-lines(seq.sa, seq.sf20, col="gray", lwd=3)
-lines(seq.sa, seq.sf30, col="gray", lwd=3)
-lines(seq.sa[tab.ra10>=seq.sa], seq.sf10[tab.ra10>=seq.sa], col="blue", lwd=3)
-lines(seq.sa[tab.ra20>=seq.sa], seq.sf20[tab.ra20>=seq.sa], col="red", lwd=3)
-lines(seq.sa[tab.ra30>=seq.sa], seq.sf30[tab.ra30>=seq.sa],col="green", lwd=3)
-
-
 
 #DEFINE NEW VARIABLES:
 #costpt = x.jk.pt = per-patient costs ($59.5k/patient) = pt recruitment + pt retention + RN or clinical RA + MD + clinical procedure + labs
@@ -130,6 +114,24 @@ legend("topleft",
        lty=c(1,0), pch=c(NA, 16), col=c("red3", "black"))
 
 ###
+
+#original
+par(mfrow=c(1,2))
+plot(seq.sa, tab.ra10, type="l", col="gray", xlab="Sa", ylab="S", ylim=c(-20, 100), xlim=c(0, 50),xaxs="i",yaxs="i", main="S vs Sa", lwd=3)
+lines(seq.sa, tab.ra20,col="gray", lwd=3)
+lines(seq.sa, tab.ra30,col="gray", lwd=3)
+lines(seq.sa[tab.ra10>=seq.sa], tab.ra10[tab.ra10>=seq.sa], col="blue", lwd=3)
+lines(seq.sa[tab.ra20>=seq.sa], tab.ra20[tab.ra20>=seq.sa], col="red", lwd=3)
+lines(seq.sa[tab.ra30>=seq.sa], tab.ra30[tab.ra30>=seq.sa],col="green", lwd=3)
+
+plot(seq.sa, seq.sf10, type="l", col="gray", xlab="Sa", ylab="Sf", ylim=c(-20, 100), xlim=c(0, 50), xaxs="i", yaxs="i", main="Sf vs Sa", lwd=3)
+lines(seq.sa, seq.sf20, col="gray", lwd=3)
+lines(seq.sa, seq.sf30, col="gray", lwd=3)
+lines(seq.sa[tab.ra10>=seq.sa], seq.sf10[tab.ra10>=seq.sa], col="blue", lwd=3)
+lines(seq.sa[tab.ra20>=seq.sa], seq.sf20[tab.ra20>=seq.sa], col="red", lwd=3)
+lines(seq.sa[tab.ra30>=seq.sa], seq.sf30[tab.ra30>=seq.sa],col="green", lwd=3)
+
+
 
 #original - no round
 for(k in 1:length(seq.sa)){
