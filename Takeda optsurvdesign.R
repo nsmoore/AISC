@@ -92,9 +92,54 @@ lines(seq.sa[tab.ra10>=seq.sa], seq.sf10[tab.ra10>=seq.sa], col="blue", lwd=3)
 lines(seq.sa[tab.ra20>=seq.sa], seq.sf20[tab.ra20>=seq.sa], col="red", lwd=3)
 lines(seq.sa[tab.ra30>=seq.sa], seq.sf30[tab.ra30>=seq.sa],col="green", lwd=3)
 
-# cost
+#DEFINE NEW VARIABLES:
+#cost = per-study costs
+#costpt = per-patient costs ($59.5k/patient) = pt recruitment + pt retention + RN/clinical RA + MD + clinical procedure + labs
+#costsite = per-site costs ($50k/site), where x.jk.site = site recruitment + site retention + administrative staff + site monitoring + x.jk.pt * number of planned visits per site
+#costd = Cost of each day in the study ($37k/day)
+#Nsites = number of sites
+#r = average number of pts that can be accrued per site
+
+#Assign input variables
+costpt <- 59.5 #cost per patient in thousands of USD
+costsite <- 50 #cost per site in thousands of USD
+costd <- 37 #cost per day in thousands of USD
+Nsites <- ??? #number of sites
+
+#Total cost of study 
+#x.jk <- costpt*N + costd*S + costsite*Nsites
+#therefore x.jk.ra10 = costpt*get_N(Sa = seq.sa[k], ra = 10, lambda1 = log(2)/20, lambda0 = log(2)/10, d=1) + costd*get_S_noround(Sa = seq.sa[k], ra = 10, lambda1 = log(2)/20, lambda0 = log(2)/10, d=1) + costsite*Nsites
+
+x.jk.ra10<-c()
+x.jk.ra20<-c()
+x.jk.ra30<-c()
+
+for(k in 1:length(seq.sa)){
+  x.jk.ra10 <- c(x.jk.ra10, (costpt*get_N(Sa = seq.sa[k], ra = 10, lambda1 = log(2)/20, lambda0 = log(2)/10, d=1) + costd*get_S_noround(Sa = seq.sa[k], ra = 10, lambda1 = log(2)/20, lambda0 = log(2)/10, d=1) + costsite*Nsites))
+  x.jk.ra20 <- c(x.jk.ra20, (costpt*get_N(Sa = seq.sa[k], ra = 20, lambda1 = log(2)/20, lambda0 = log(2)/10, d=1) + costd*get_S_noround(Sa = seq.sa[k], ra = 20, lambda1 = log(2)/20, lambda0 = log(2)/10, d=1) + costsite*Nsites))
+  x.jk.ra30 <- c(x.jk.ra30, (costpt*get_N(Sa = seq.sa[k], ra = 30, lambda1 = log(2)/20, lambda0 = log(2)/10, d=1) + costd*get_S_noround(Sa = seq.sa[k], ra = 30, lambda1 = log(2)/20, lambda0 = log(2)/10, d=1) + costsite*Nsites))
+}
+
 # enroll_ppt
 # 
 # total_cost <- 
 
-#test edit by jon
+# costs in thousands
+# number of monitoring days = number of total days /30 (once a month)
+x.jk.pt <- 59.5
+
+
+x.jk.site <- x.jk.pt*
+x.jk <- 
+
+# Plot x.jk.ra10 vs Sa superimposed on plot of (ddS vs Sa)
+
+par(new = T)
+with(x.jk.ra10, plot(seq.sa, x.jk.ra10, pch=16, axes=F, xlab=NA, ylab=NA, cex=1.2))
+axis(side = 4)
+mtext(side = 4, line = 3, 'Number genes selected')
+legend("topleft",
+       legend=c(expression(-log[10](italic(p))), "N genes"),
+       lty=c(1,0), pch=c(NA, 16), col=c("red3", "black"))
+
+#nick gone done this shiznit  
