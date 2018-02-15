@@ -114,8 +114,8 @@ axis(side = 4)
 mtext(side = 4, line = 3, 'Cost ($k)')
 
 
-
-#example
+######
+#example plotting
 par(mar = c(5,5,2,5))
 with(d, plot(x, logp, type="l", col="red3", 
              ylab=expression(-log[10](italic(p))),
