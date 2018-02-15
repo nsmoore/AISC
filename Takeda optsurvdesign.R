@@ -58,21 +58,19 @@ for(k in 1:length(seq.sa)){
 # costs in thousands
 # number of monitoring days = number of total days /30 (once a month)
 
-
 set.seed(2015-04-13)
 
-
 par(mfrow=c(1,2))
-plot(seq.sa, tab.ra10, type="l", col="gray", xlab="Sa", ylab="S", ylim=c(-20, 100), xlim=c(0, 50),xaxs="i",yaxs="i", main="S vs Sa", lwd=3)
+plot(seq.sa, tab.ra10, type="l", col="gray", xlab="Sa", ylab="S", ylim=c(-20, 100), xlim=c(0, 50),xaxs="i",yaxs="i", main="S and cost vs Sa", lwd=3)
 lines(seq.sa, tab.ra20,col="gray", lwd=3)
 lines(seq.sa, tab.ra30,col="gray", lwd=3)
 lines(seq.sa[tab.ra10>=seq.sa], tab.ra10[tab.ra10>=seq.sa], col="blue", lwd=3)
 lines(seq.sa[tab.ra20>=seq.sa], tab.ra20[tab.ra20>=seq.sa], col="red", lwd=3)
 lines(seq.sa[tab.ra30>=seq.sa], tab.ra30[tab.ra30>=seq.sa],col="green", lwd=3)
 par(new=T)
-plot(seq.sa, x.jk.ra10, type="l", col="gray", axes=F, xlab=NA, ylab=NA, cex=1.2)
-lines(seq.sa, x.jk.ra20,col="gray", cex=1.2)
-lines(seq.sa, x.jk.ra30,col="gray", cex=1.2)
+plot(seq.sa, x.jk.ra10, type="l", col="gray", xlab=NA, ylab=NA, cex=1, xlim=c(0, 50),xaxs="i",yaxs="i", axes = F)
+lines(seq.sa, x.jk.ra20,col="gray", cex=1)
+lines(seq.sa, x.jk.ra30,col="gray", cex=1)
 lines(seq.sa[tab.ra10>=seq.sa], x.jk.ra10[tab.ra10>=seq.sa], col="blue", lwd=3)
 lines(seq.sa[tab.ra20>=seq.sa], x.jk.ra20[tab.ra20>=seq.sa], col="red", lwd=3)
 lines(seq.sa[tab.ra30>=seq.sa], x.jk.ra30[tab.ra30>=seq.sa],col="green", lwd=3)
@@ -81,21 +79,28 @@ mtext(side = 4, line = 3, 'Cost ($k)')
 
 
 
-plot(seq.sa, seq.sf10, type="l", col="gray", xlab="Sa", ylab="Sf", ylim=c(-20, 100), xlim=c(0, 50), xaxs="i", yaxs="i", main="Sf vs Sa", lwd=3)
+plot(seq.sa, seq.sf10, type="l", col="gray", xlab="Sa", ylab="Sf", ylim=c(-20, 100), xlim=c(0, 50), xaxs="i", yaxs="i", main="Sf and cost vs Sa", lwd=3)
 lines(seq.sa, seq.sf20, col="gray", lwd=3)
 lines(seq.sa, seq.sf30, col="gray", lwd=3)
 lines(seq.sa[tab.ra10>=seq.sa], seq.sf10[tab.ra10>=seq.sa], col="blue", lwd=3)
 lines(seq.sa[tab.ra20>=seq.sa], seq.sf20[tab.ra20>=seq.sa], col="red", lwd=3)
 lines(seq.sa[tab.ra30>=seq.sa], seq.sf30[tab.ra30>=seq.sa],col="green", lwd=3)
 par(new=T)
-plot(seq.sa, x.jk.ra10, type="l", col="gray", axes=F, xlab=NA, ylab=NA, cex=1.2)
-lines(seq.sa, x.jk.ra20,col="gray", cex=1.2)
-lines(seq.sa, x.jk.ra30,col="gray", cex=1.2)
+plot(seq.sa, x.jk.ra10, type="l", col="gray", axes=F, xlab=NA, ylab=NA, cex=1, xlim=c(0, 50),xaxs="i",yaxs="i", axes =F)
+lines(seq.sa, x.jk.ra20,col="gray", cex=1)
+lines(seq.sa, x.jk.ra30,col="gray", cex=1)
 lines(seq.sa[tab.ra10>=seq.sa], x.jk.ra10[tab.ra10>=seq.sa], col="blue", lwd=3)
 lines(seq.sa[tab.ra20>=seq.sa], x.jk.ra20[tab.ra20>=seq.sa], col="red", lwd=3)
 lines(seq.sa[tab.ra30>=seq.sa], x.jk.ra30[tab.ra30>=seq.sa],col="green", lwd=3)
 axis(side = 4)
 mtext(side = 4, line = 3, 'Cost ($k)')
+
+inf_power <- data.frame(Sa=seq.sa,S.ra10=tab.ra10,Cost.ra10=x.jk.ra10,S.ra10=tab.ra20,Cost.ra20=x.jk.ra20,S.ra30=tab.ra30,Cost.ra30=x.jk.ra30)
+
+#ggplot time
+install.packages("ggplot2")
+library(ggplot2)
+
 
 
 ######
