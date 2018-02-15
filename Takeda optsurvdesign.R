@@ -9,6 +9,130 @@ tab.ra30<-c()
 
 #original
 for(k in 1:length(seq.sa)){
+  tab.ra10 <- c(tab.ra10, get_S(Sa = seq.sa[k], ra = 10, lambda1 = log(2)/20, lambda0 = log(2)/10, d=1))
+  tab.ra20 <- c(tab.ra20, get_S(Sa = seq.sa[k], ra = 20, lambda1 = log(2)/20, lambda0 = log(2)/10, d=1))
+  tab.ra30 <- c(tab.ra30, get_S(Sa = seq.sa[k], ra = 30, lambda1 = log(2)/20, lambda0 = log(2)/10, d=1))
+}
+
+seq.sf10 <-  tab.ra10 - seq.sa
+seq.sf20 <-  tab.ra20 - seq.sa
+seq.sf30 <-  tab.ra30 - seq.sa
+
+par(mfrow=c(1,2))
+plot(seq.sa, tab.ra10, type="l", col="gray", xlab="Sa", ylab="S", ylim=c(-20, 100), xlim=c(0, 50),xaxs="i",yaxs="i", main="S vs Sa", lwd=3)
+lines(seq.sa, tab.ra20,col="gray", lwd=3)
+lines(seq.sa, tab.ra30,col="gray", lwd=3)
+lines(seq.sa[tab.ra10>=seq.sa], tab.ra10[tab.ra10>=seq.sa], col="blue", lwd=3)
+lines(seq.sa[tab.ra20>=seq.sa], tab.ra20[tab.ra20>=seq.sa], col="red", lwd=3)
+lines(seq.sa[tab.ra30>=seq.sa], tab.ra30[tab.ra30>=seq.sa],col="green", lwd=3)
+
+plot(seq.sa, seq.sf10, type="l", col="gray", xlab="Sa", ylab="Sf", ylim=c(-20, 100), xlim=c(0, 50), xaxs="i", yaxs="i", main="Sf vs Sa", lwd=3)
+lines(seq.sa, seq.sf20, col="gray", lwd=3)
+lines(seq.sa, seq.sf30, col="gray", lwd=3)
+lines(seq.sa[tab.ra10>=seq.sa], seq.sf10[tab.ra10>=seq.sa], col="blue", lwd=3)
+lines(seq.sa[tab.ra20>=seq.sa], seq.sf20[tab.ra20>=seq.sa], col="red", lwd=3)
+lines(seq.sa[tab.ra30>=seq.sa], seq.sf30[tab.ra30>=seq.sa],col="green", lwd=3)
+
+
+
+#DEFINE NEW VARIABLES:
+#costpt = x.jk.pt = per-patient costs ($59.5k/patient) = pt recruitment + pt retention + RN or clinical RA + MD + clinical procedure + labs
+#costsite = x.jk.site = per-site costs (est. $50k/site for recruitment?)  
+  # = site recruitment + site retention*S/30 + administrative staff*S/30 + site monitoring*S + x.jk.pt * number of planned pts per site
+  # = site recruitment + S(site retention/30 + administrative staff/30 + site monitoring) + x.jk.pt * number of planned pts per site
+  # = site recruitment + S(costd) + costpt * number of planned pts per site
+#x.jk = per-study costs = costsite*Nsites = (costrecruitment + S(costd) + costpt * r)*N/r
+#costd = Cost of each day in the study ($37k/day)
+#N = number of patients = ra*Sa = ra*seq.Sa
+#Nsites = number of sites = N/r
+#r = average number of pts that can be accrued per site
+#S = duration of trial in days
+costpt <- 59.5
+costd <- 37
+costrecruitment <- 50
+r <- 10
+seq.N.ra10 <- seq.sa*10
+seq.N.ra20 <- seq.sa*20
+seq.N.ra30 <- seq.sa*30
+
+#Total cost of study - Jon
+x.jk <- costpt*N + costd*S + costsite*Nsites
+
+#Total cost of study - Nick
+# x.jk <- (costrecruitment + S(costd) + costpt * r)*N/r
+
+x.jk.ra10<-c()
+x.jk.ra20<-c()
+x.jk.ra30<-c()
+for(k in 1:length(seq.sa)){
+  x.jk.ra10 <- c(x.jk.ra10,(costrecruitment + tab.ra10[k]*(costd) + costpt * r)*seq.N.ra10[k]/r)
+  x.jk.ra20 <- c(x.jk.ra20,(costrecruitment + tab.ra20[k]*(costd) + costpt * r)*seq.N.ra20[k]/r)
+  x.jk.ra30 <- c(x.jk.ra30,(costrecruitment + tab.ra30[k]*(costd) + costpt * r)*seq.N.ra30[k]/r)
+}
+
+
+# costs in thousands
+# number of monitoring days = number of total days /30 (once a month)
+
+
+set.seed(2015-04-13)
+
+
+par(mfrow=c(1,2))
+plot(seq.sa, tab.ra10, type="l", col="gray", xlab="Sa", ylab="S", ylim=c(-20, 100), xlim=c(0, 50),xaxs="i",yaxs="i", main="S vs Sa", lwd=3)
+lines(seq.sa, tab.ra20,col="gray", lwd=3)
+lines(seq.sa, tab.ra30,col="gray", lwd=3)
+lines(seq.sa[tab.ra10>=seq.sa], tab.ra10[tab.ra10>=seq.sa], col="blue", lwd=3)
+lines(seq.sa[tab.ra20>=seq.sa], tab.ra20[tab.ra20>=seq.sa], col="red", lwd=3)
+lines(seq.sa[tab.ra30>=seq.sa], tab.ra30[tab.ra30>=seq.sa],col="green", lwd=3)
+par(new=T)
+plot(seq.sa, x.jk.ra10, type="l", col="gray", axes=F, xlab=NA, ylab=NA, cex=1.2)
+lines(seq.sa, x.jk.ra20,col="gray", cex=1.2)
+lines(seq.sa, x.jk.ra30,col="gray", cex=1.2)
+lines(seq.sa[tab.ra10>=seq.sa], x.jk.ra10[tab.ra10>=seq.sa], col="blue", lwd=3)
+lines(seq.sa[tab.ra20>=seq.sa], x.jk.ra20[tab.ra20>=seq.sa], col="red", lwd=3)
+lines(seq.sa[tab.ra30>=seq.sa], x.jk.ra30[tab.ra30>=seq.sa],col="green", lwd=3)
+axis(side = 4)
+mtext(side = 4, line = 3, 'Cost ($k)')
+
+
+
+plot(seq.sa, seq.sf10, type="l", col="gray", xlab="Sa", ylab="Sf", ylim=c(-20, 100), xlim=c(0, 50), xaxs="i", yaxs="i", main="Sf vs Sa", lwd=3)
+lines(seq.sa, seq.sf20, col="gray", lwd=3)
+lines(seq.sa, seq.sf30, col="gray", lwd=3)
+lines(seq.sa[tab.ra10>=seq.sa], seq.sf10[tab.ra10>=seq.sa], col="blue", lwd=3)
+lines(seq.sa[tab.ra20>=seq.sa], seq.sf20[tab.ra20>=seq.sa], col="red", lwd=3)
+lines(seq.sa[tab.ra30>=seq.sa], seq.sf30[tab.ra30>=seq.sa],col="green", lwd=3)
+par(new=T)
+plot(seq.sa, x.jk.ra10, type="l", col="gray", axes=F, xlab=NA, ylab=NA, cex=1.2)
+lines(seq.sa, x.jk.ra20,col="gray", cex=1.2)
+lines(seq.sa, x.jk.ra30,col="gray", cex=1.2)
+lines(seq.sa[tab.ra10>=seq.sa], x.jk.ra10[tab.ra10>=seq.sa], col="blue", lwd=3)
+lines(seq.sa[tab.ra20>=seq.sa], x.jk.ra20[tab.ra20>=seq.sa], col="red", lwd=3)
+lines(seq.sa[tab.ra30>=seq.sa], x.jk.ra30[tab.ra30>=seq.sa],col="green", lwd=3)
+axis(side = 4)
+mtext(side = 4, line = 3, 'Cost ($k)')
+
+
+
+#example
+par(mar = c(5,5,2,5))
+with(d, plot(x, logp, type="l", col="red3", 
+             ylab=expression(-log[10](italic(p))),
+             ylim=c(0,3)))
+
+par(new = T)
+with(d, plot(x, n, pch=16, axes=F, xlab=NA, ylab=NA, cex=1.2))
+axis(side = 4)
+mtext(side = 4, line = 3, 'Number genes selected')
+legend("topleft",
+       legend=c(expression(-log[10](italic(p))), "N genes"),
+       lty=c(1,0), pch=c(NA, 16), col=c("red3", "black"))
+
+###
+
+#original - no round
+for(k in 1:length(seq.sa)){
   tab.ra10 <- c(tab.ra10, get_S_noround(Sa = seq.sa[k], ra = 10, lambda1 = log(2)/20, lambda0 = log(2)/10, d=1))
   tab.ra20 <- c(tab.ra20, get_S_noround(Sa = seq.sa[k], ra = 20, lambda1 = log(2)/20, lambda0 = log(2)/10, d=1))
   tab.ra30 <- c(tab.ra30, get_S_noround(Sa = seq.sa[k], ra = 30, lambda1 = log(2)/20, lambda0 = log(2)/10, d=1))
@@ -91,49 +215,3 @@ lines(seq.sa, dd.seq.sf30, col="green", lwd=3, type="p")
 lines(seq.sa[tab.ra10>=seq.sa], seq.sf10[tab.ra10>=seq.sa], col="blue", lwd=3)
 lines(seq.sa[tab.ra20>=seq.sa], seq.sf20[tab.ra20>=seq.sa], col="red", lwd=3)
 lines(seq.sa[tab.ra30>=seq.sa], seq.sf30[tab.ra30>=seq.sa],col="green", lwd=3)
-
-#DEFINE NEW VARIABLES:
-#cost = per-study costs
-#costpt = per-patient costs ($59.5k/patient) = pt recruitment + pt retention + RN/clinical RA + MD + clinical procedure + labs
-#costsite = per-site costs ($50k/site), where x.jk.site = site recruitment + site retention + administrative staff + site monitoring + x.jk.pt * number of planned visits per site
-#costd = Cost of each day in the study ($37k/day)
-#Nsites = number of sites
-#r = average number of pts that can be accrued per site
-
-#Total cost of study 
-x.jk <- costpt*N + costd*S + costsite*Nsites
-
-# enroll_ppt
-# 
-# total_cost <- 
-
-# costs in thousands
-# number of monitoring days = number of total days /30 (once a month)
-x.jk.pt <- 59.5
-
-
-x.jk.site <- x.jk.pt*
-x.jk <- 
-
-
-
-set.seed(2015-04-13)
-
-d = data.frame(x =seq(1,10),
-               n = c(0,0,1,2,3,4,4,5,6,6),
-               logp = signif(-log10(runif(10)), 2))
-
-par(mar = c(5,5,2,5))
-with(d, plot(x, logp, type="l", col="red3", 
-             ylab=expression(-log[10](italic(p))),
-             ylim=c(0,3)))
-
-par(new = T)
-with(d, plot(x, n, pch=16, axes=F, xlab=NA, ylab=NA, cex=1.2))
-axis(side = 4)
-mtext(side = 4, line = 3, 'Number genes selected')
-legend("topleft",
-       legend=c(expression(-log[10](italic(p))), "N genes"),
-       lty=c(1,0), pch=c(NA, 16), col=c("red3", "black"))
-
-#nick gone done this shiznit  
