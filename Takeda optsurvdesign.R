@@ -94,8 +94,6 @@ lines(seq.sa[tab.ra30>=seq.sa], x.jk.ra30[tab.ra30>=seq.sa],col="green", lwd=3)
 axis(side = 4)
 mtext(side = 4, line = 3, 'Cost ($k)')
 
-<<<<<<< HEAD
-=======
 #Making data frame
 inf_power <- data.frame(Sa=seq.sa,S.ra10=tab.ra10,Cost.ra10=x.jk.ra10,S.ra10=tab.ra20,Cost.ra20=x.jk.ra20,S.ra30=tab.ra30,Cost.ra30=x.jk.ra30)
 
@@ -168,9 +166,6 @@ grid.draw(rbind(ggplotGrob(plot1),
 
 
 
-
-
->>>>>>> aa14b2fc08a8f6ab6d5b62419b73361c0b619679
 
 ######
 
