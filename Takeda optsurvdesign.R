@@ -119,7 +119,8 @@ designs <- tibble(
   
   cost=(costrecruitment + S*(costd) + costpt * r)* N / r
   
-  revenue = 
+  revenue = (number of months on patent from start of trial - S) * (projected revenue per month)
+
   
   # benefit
   
