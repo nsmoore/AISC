@@ -31,9 +31,9 @@ seq.sf30 <-  tab.ra30 - seq.sa
 #Nsites = number of sites = N/r
 #r = average number of pts that can be accrued per site
 #S = duration of trial in months
-costpt <- 59.5
-costm <- 37*30
-costrecruitment <- 50
+costpt <- 59500
+costm <- 37000*30
+costrecruitment <- 50000 #false -> was 50k for all sites combined in study. 5k?
 r <- 10
 seq.N.ra10 <- seq.sa*10
 seq.N.ra20 <- seq.sa*20
@@ -67,14 +67,14 @@ lines(seq.sa[tab.ra10>=seq.sa], tab.ra10[tab.ra10>=seq.sa], col="blue", lwd=3)
 lines(seq.sa[tab.ra20>=seq.sa], tab.ra20[tab.ra20>=seq.sa], col="red", lwd=3)
 lines(seq.sa[tab.ra30>=seq.sa], tab.ra30[tab.ra30>=seq.sa],col="green", lwd=3)
 par(new=T)
-plot(seq.sa, x.jk.ra10, type="l", col="gray", axes=F, xlab=NA, ylab=NA, cex=1.2)
+plot(seq.sa, x.jk.ra10, type="l", col="gray", axes=F, xlab=NA, ylab=NA, cex=1.2, xlim=c(0, 50),xaxs="i",yaxs="i")
 lines(seq.sa, x.jk.ra20,col="gray", cex=1.2)
 lines(seq.sa, x.jk.ra30,col="gray", cex=1.2)
 lines(seq.sa[tab.ra10>=seq.sa], x.jk.ra10[tab.ra10>=seq.sa], col="blue", lwd=3)
 lines(seq.sa[tab.ra20>=seq.sa], x.jk.ra20[tab.ra20>=seq.sa], col="red", lwd=3)
 lines(seq.sa[tab.ra30>=seq.sa], x.jk.ra30[tab.ra30>=seq.sa],col="green", lwd=3)
 axis(side = 4)
-mtext(side = 4, line = 3, 'Cost ($k)')
+mtext(side = 4, line = 3, 'Cost')
 
 
 
@@ -85,14 +85,14 @@ lines(seq.sa[tab.ra10>=seq.sa], seq.sf10[tab.ra10>=seq.sa], col="blue", lwd=3)
 lines(seq.sa[tab.ra20>=seq.sa], seq.sf20[tab.ra20>=seq.sa], col="red", lwd=3)
 lines(seq.sa[tab.ra30>=seq.sa], seq.sf30[tab.ra30>=seq.sa],col="green", lwd=3)
 par(new=T)
-plot(seq.sa, x.jk.ra10, type="l", col="gray", axes=F, xlab=NA, ylab=NA, cex=1.2)
+plot(seq.sa, x.jk.ra10, type="l", col="gray", axes=F, xlab=NA, ylab=NA, cex=1.2, xlim=c(0, 50),xaxs="i", yaxs="i")
 lines(seq.sa, x.jk.ra20,col="gray", cex=1.2)
 lines(seq.sa, x.jk.ra30,col="gray", cex=1.2)
 lines(seq.sa[tab.ra10>=seq.sa], x.jk.ra10[tab.ra10>=seq.sa], col="blue", lwd=3)
 lines(seq.sa[tab.ra20>=seq.sa], x.jk.ra20[tab.ra20>=seq.sa], col="red", lwd=3)
 lines(seq.sa[tab.ra30>=seq.sa], x.jk.ra30[tab.ra30>=seq.sa],col="green", lwd=3)
 axis(side = 4)
-mtext(side = 4, line = 3, 'Cost ($k)')
+mtext(side = 4, line = 3, 'Cost')
 
 #Making data frame
 inf_power <- data.frame(Sa=seq.sa,S.ra10=tab.ra10,Cost.ra10=x.jk.ra10,S.ra10=tab.ra20,Cost.ra20=x.jk.ra20,S.ra30=tab.ra30,Cost.ra30=x.jk.ra30)
@@ -102,6 +102,7 @@ install.packages("ggplot2")
 install.packages("tidyverse")
 library(ggplot2)
 library(grid)
+library(tidyverse)
 
 
 #Godwin code
@@ -117,11 +118,14 @@ designs <- tibble(
   
   N = c(seq.sa*10, seq.sa*20, seq.sa*30),
   
-  cost=(costrecruitment + S*(costd) + costpt * r)* N / r
+  cost=(costrecruitment + S*(costm) + costpt * r)* N / r,
   
-  revenue = (number of months on patent from start of trial - S) * (projected revenue per month)
-
-  # benefit
+  # revenue = (number of months on patent from start of trial - S) * (projected revenue per month)
+  # revenue.month = 200000 #(200M/month for bortezomib)
+  # patent.months = 12*12 #bortezomib was approved by FDA in May 2003, synthesized 1995 = 8 years of 20 yr patent elapsed, still 12 years left
+  revenue = (200000000 - S)*12*12,
+  
+  profit = revenue - cost
 
 )
 
@@ -163,6 +167,34 @@ plot2 <- designs %>%
   guides(lty=F)
 
 
+plot3 <- designs %>%
+  
+  na.omit() %>%
+  
+  filter(S<100 | cost<1e5) %>%
+  
+  ggplot(aes(x=Sa,y=revenue)) +
+  
+  geom_line(aes(color=factor(ra),lty=factor(Sf<0))) +
+  
+  labs(color="accrual rate") +
+  
+  guides(lty=F)
+
+plot4 <- designs %>%
+  
+  na.omit() %>%
+  
+  filter(S<100 | cost<1e5) %>%
+  
+  ggplot(aes(x=Sa,y=profit)) +
+  
+  geom_line(aes(color=factor(ra),lty=factor(Sf<0))) +
+  
+  labs(color="accrual rate") +
+  
+  guides(lty=F)
+
 
 grid.newpage()
 
@@ -174,16 +206,20 @@ grid.draw(rbind(ggplotGrob(plot1),
 
 
 
-
+#install.packages("ggpubr")
 library(ggpubr)
 
 ggarrange(plot1,
           
           plot2,
           
+          plot3,
+          
+          plot4,
+          
           ncol=1,
           
-          nrow=2,
+          nrow=4,
           
           common.legend = TRUE,
           
