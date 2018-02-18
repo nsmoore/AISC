@@ -117,11 +117,9 @@ designs <- tibble(
   
   N = c(seq.sa*10, seq.sa*20, seq.sa*30),
   
-  cost=(costrecruitment + S*(costd) + costpt * r)* N / r
-  
-  revenue = (number of months on patent from start of trial - S) * (projected revenue per month)
-  
-  benefit
+    cost=(costrecruitment + S*(costd) + costpt * r)* N / r
+    
+    revenue = (number of months on patent from start of trial - S) * (projected revenue per month)
   
 )
 # patient benefit https://www-ncbi-nlm-nih-gov.ezp-prod1.hul.harvard.edu/pmc/articles/PMC4854260/
