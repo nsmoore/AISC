@@ -117,7 +117,7 @@ designs <- tibble(
   
   N = c(seq.sa*10, seq.sa*20, seq.sa*30),
   
-  cost=(costrecruitment + S*(costd) + costpt * r)*N/r
+  cost=(costrecruitment + S*(costd) + costpt * r)* N / r
   
   revenue =
   
@@ -217,7 +217,6 @@ lines(seq.sa, seq.sf30, col="gray", lwd=3)
 lines(seq.sa[tab.ra10>=seq.sa], seq.sf10[tab.ra10>=seq.sa], col="blue", lwd=3)
 lines(seq.sa[tab.ra20>=seq.sa], seq.sf20[tab.ra20>=seq.sa], col="red", lwd=3)
 lines(seq.sa[tab.ra30>=seq.sa], seq.sf30[tab.ra30>=seq.sa],col="green", lwd=3)
-
 
 
 #original - no round
