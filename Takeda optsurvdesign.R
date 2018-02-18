@@ -121,13 +121,13 @@ designs <- tibble(
   
   cost=(costrecruitment + S*(costd) + costpt * r)*N/r
   
-  revenue =
+  revenue
   
   benefit
   
 )
 # patient benefit https://www-ncbi-nlm-nih-gov.ezp-prod1.hul.harvard.edu/pmc/articles/PMC4854260/
-
+# revenue: 800k-8M lost per day of delay https://www.prnewswire.com/news-releases/clinical-trial-delays-cost-pharmaceutical-companies-55044607.html
 
 plot1 <- designs %>%
   
