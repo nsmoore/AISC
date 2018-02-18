@@ -94,8 +94,6 @@ lines(seq.sa[tab.ra30>=seq.sa], x.jk.ra30[tab.ra30>=seq.sa],col="green", lwd=3)
 axis(side = 4)
 mtext(side = 4, line = 3, 'Cost ($k)')
 
-<<<<<<< HEAD
-=======
 #Making data frame
 inf_power <- data.frame(Sa=seq.sa,S.ra10=tab.ra10,Cost.ra10=x.jk.ra10,S.ra10=tab.ra20,Cost.ra20=x.jk.ra20,S.ra30=tab.ra30,Cost.ra30=x.jk.ra30)
 
@@ -119,7 +117,7 @@ designs <- tibble(
   
   N = c(seq.sa*10, seq.sa*20, seq.sa*30),
   
-  cost=(costrecruitment + S*(costd) + costpt * r)*N/r
+  cost=(costrecruitment + S*(costd) + costpt * r)* N / r
   
   revenue
   
@@ -174,7 +172,6 @@ grid.draw(rbind(ggplotGrob(plot1),
 
 library(ggpubr)
 
-
 ggarrange(plot1,
           
           plot2,
@@ -186,8 +183,6 @@ ggarrange(plot1,
           common.legend = TRUE,
           
           legend="right")
-
->>>>>>> aa14b2fc08a8f6ab6d5b62419b73361c0b619679
 
 ######
 
@@ -222,7 +217,6 @@ lines(seq.sa, seq.sf30, col="gray", lwd=3)
 lines(seq.sa[tab.ra10>=seq.sa], seq.sf10[tab.ra10>=seq.sa], col="blue", lwd=3)
 lines(seq.sa[tab.ra20>=seq.sa], seq.sf20[tab.ra20>=seq.sa], col="red", lwd=3)
 lines(seq.sa[tab.ra30>=seq.sa], seq.sf30[tab.ra30>=seq.sa],col="green", lwd=3)
-
 
 
 #original - no round
