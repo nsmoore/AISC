@@ -22,17 +22,17 @@ seq.sf30 <-  tab.ra30 - seq.sa
 #DEFINE NEW VARIABLES:
 #costpt = x.jk.pt = per-patient costs ($59.5k/patient) = pt recruitment + pt retention + RN or clinical RA + MD + clinical procedure + labs
 #costsite = x.jk.site = per-site costs (est. $50k/site for recruitment?)  
-  # = site recruitment + site retention*S/30 + administrative staff*S/30 + site monitoring*S + x.jk.pt * number of planned pts per site
-  # = site recruitment + S(site retention/30 + administrative staff/30 + site monitoring) + x.jk.pt * number of planned pts per site
-  # = site recruitment + S(costd) + costpt * number of planned pts per site
-#x.jk = per-study costs = costsite*Nsites = (costrecruitment + S(costd) + costpt * r)*N/r
-#costd = Cost of each day in the study ($37k/day)
+  # = site recruitment + site retention*S + administrative staff*S + site monitoring*S*30 + x.jk.pt * number of planned pts per site
+  # = site recruitment + S(site retention + administrative staff + site monitoring*30) + x.jk.pt * number of planned pts per site
+  # = site recruitment + S(costm) + costpt * number of planned pts per site
+#x.jk = per-study costs = costsite*Nsites = (costrecruitment + S(costm) + costpt * r)*N/r
+#costm = Cost of each month in the study ($37k/day)
 #N = number of patients = ra*Sa = ra*seq.Sa
 #Nsites = number of sites = N/r
 #r = average number of pts that can be accrued per site
-#S = duration of trial in days
+#S = duration of trial in months
 costpt <- 59.5
-costd <- 37
+costm <- 37*30
 costrecruitment <- 50
 r <- 10
 seq.N.ra10 <- seq.sa*10
@@ -40,15 +40,15 @@ seq.N.ra20 <- seq.sa*20
 seq.N.ra30 <- seq.sa*30
 
 #Total cost of study - Nick
-# x.jk <- (costrecruitment + S(costd) + costpt * r)*N/r
+# x.jk <- (costrecruitment + S(costm) + costpt * r)*N/r
 
 x.jk.ra10<-c()
 x.jk.ra20<-c()
 x.jk.ra30<-c()
 for(k in 1:length(seq.sa)){
-  x.jk.ra10 <- c(x.jk.ra10,(costrecruitment + tab.ra10[k]*(costd) + costpt * r)*seq.N.ra10[k]/r)
-  x.jk.ra20 <- c(x.jk.ra20,(costrecruitment + tab.ra20[k]*(costd) + costpt * r)*seq.N.ra20[k]/r)
-  x.jk.ra30 <- c(x.jk.ra30,(costrecruitment + tab.ra30[k]*(costd) + costpt * r)*seq.N.ra30[k]/r)
+  x.jk.ra10 <- c(x.jk.ra10,(costrecruitment + tab.ra10[k]*(costm) + costpt * r)*seq.N.ra10[k]/r)
+  x.jk.ra20 <- c(x.jk.ra20,(costrecruitment + tab.ra20[k]*(costm) + costpt * r)*seq.N.ra20[k]/r)
+  x.jk.ra30 <- c(x.jk.ra30,(costrecruitment + tab.ra30[k]*(costm) + costpt * r)*seq.N.ra30[k]/r)
 }
 
 
@@ -119,11 +119,16 @@ designs <- tibble(
   
   cost=(costrecruitment + S*(costd) + costpt * r)* N / r
   
-  revenue
+  revenue = 
   
-  benefit
+  # benefit
   
 )
+
+mincost <- group_by(designs,ra) %>%
+  
+  slice(which.min(cost))
+
 # patient benefit https://www-ncbi-nlm-nih-gov.ezp-prod1.hul.harvard.edu/pmc/articles/PMC4854260/
 # revenue: 800k-8M lost per day of delay https://www.prnewswire.com/news-releases/clinical-trial-delays-cost-pharmaceutical-companies-55044607.html
 
@@ -186,7 +191,7 @@ ggarrange(plot1,
 
 ######
 
-#example plotting
+#example plotting with 2 y axes
 par(mar = c(5,5,2,5))
 with(d, plot(x, logp, type="l", col="red3", 
              ylab=expression(-log[10](italic(p))),
