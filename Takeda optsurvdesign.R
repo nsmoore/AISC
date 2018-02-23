@@ -2,7 +2,7 @@ install.packages("OptSurvDesign", repos=NULL, type ="source")
 library(OptSurvDesign)
 get_S(Sa = 12, ra = 10, lambda1 = log(2)/10, lambda0 = log(2)/20, d=1)
 get_N(Sa = 12, ra = 10, lambda1 = log(2)/10, lambda0 = log(2)/20, d=1)
-seq.sa <-seq(0, 50, 0.1)
+seq.sa <-seq(0, 30, 0.1)
 tab.ra10<-c()
 tab.ra20<-c()
 tab.ra30<-c()
@@ -32,7 +32,7 @@ seq.sf30 <-  tab.ra30 - seq.sa
 #r = average number of pts that can be accrued per site
 #S = duration of trial in months
 costpt <- 59500
-costm <- 37000*30
+costm <- 8000*30
 costrecruitment <- 50000 #false -> was 50k for all sites combined in study. 5k?
 r <- 10
 seq.N.ra10 <- seq.sa*10
@@ -52,15 +52,15 @@ for(k in 1:length(seq.sa)){
 }
 
 
+
 # costs in thousands
 # number of monitoring days = number of total days /30 (once a month)
 
-
 set.seed(2015-04-13)
 
-
+##v1
 par(mfrow=c(1,2))
-plot(seq.sa, tab.ra10, type="l", col="gray", xlab="Sa", ylab="S", ylim=c(-20, 100), xlim=c(0, 50),xaxs="i",yaxs="i", main="S vs Sa", lwd=3)
+plot(seq.sa, tab.ra10, type="l", col="gray", xlab="Sa", ylab="S", ylim=c(-20, 100), xlim=c(0, 30),xaxs="i",yaxs="i", main="S vs Sa", lwd=3)
 lines(seq.sa, tab.ra20,col="gray", lwd=3)
 lines(seq.sa, tab.ra30,col="gray", lwd=3)
 lines(seq.sa[tab.ra10>=seq.sa], tab.ra10[tab.ra10>=seq.sa], col="blue", lwd=3)
@@ -76,16 +76,14 @@ lines(seq.sa[tab.ra30>=seq.sa], x.jk.ra30[tab.ra30>=seq.sa],col="green", lwd=3)
 axis(side = 4)
 mtext(side = 4, line = 3, 'Cost')
 
-
-
-plot(seq.sa, seq.sf10, type="l", col="gray", xlab="Sa", ylab="Sf", ylim=c(-20, 100), xlim=c(0, 50), xaxs="i", yaxs="i", main="Sf vs Sa", lwd=3)
+plot(seq.sa, seq.sf10, type="l", col="gray", xlab="Sa", ylab="Sf", ylim=c(-20, 100), xlim=c(0, 30), xaxs="i", yaxs="i", main="Sf vs Sa", lwd=3)
 lines(seq.sa, seq.sf20, col="gray", lwd=3)
 lines(seq.sa, seq.sf30, col="gray", lwd=3)
 lines(seq.sa[tab.ra10>=seq.sa], seq.sf10[tab.ra10>=seq.sa], col="blue", lwd=3)
 lines(seq.sa[tab.ra20>=seq.sa], seq.sf20[tab.ra20>=seq.sa], col="red", lwd=3)
 lines(seq.sa[tab.ra30>=seq.sa], seq.sf30[tab.ra30>=seq.sa],col="green", lwd=3)
 par(new=T)
-plot(seq.sa, x.jk.ra10, type="l", col="gray", axes=F, xlab=NA, ylab=NA, cex=1.2, xlim=c(0, 50),xaxs="i", yaxs="i")
+plot(seq.sa, x.jk.ra10, type="l", col="gray", axes=F, xlab=NA, ylab=NA, cex=1.2, xlim=c(0, 30),xaxs="i", yaxs="i")
 lines(seq.sa, x.jk.ra20,col="gray", cex=1.2)
 lines(seq.sa, x.jk.ra30,col="gray", cex=1.2)
 lines(seq.sa[tab.ra10>=seq.sa], x.jk.ra10[tab.ra10>=seq.sa], col="blue", lwd=3)
@@ -94,15 +92,54 @@ lines(seq.sa[tab.ra30>=seq.sa], x.jk.ra30[tab.ra30>=seq.sa],col="green", lwd=3)
 axis(side = 4)
 mtext(side = 4, line = 3, 'Cost')
 
+
+##v2
+set.seed(2015-04-13)
+par(mfrow=c(1,2))
+plot(seq.sa, tab.ra10, type="l", col="gray", xlab="Sa", ylab="S", mgp = c(2, 1, 0),
+     ylim=c(-20, 100), xlim=c(0, 30),xaxs="i",yaxs="i", main="S and Cost vs Sa", lwd=3)
+lines(seq.sa, tab.ra20,col="gray", lwd=3)
+lines(seq.sa, tab.ra30,col="gray", lwd=3)
+lines(seq.sa[tab.ra10>=seq.sa], tab.ra10[tab.ra10>=seq.sa],col="blue", lwd=3)
+lines(seq.sa[tab.ra20>=seq.sa], tab.ra20[tab.ra20>=seq.sa], col="red", lwd=3)
+lines(seq.sa[tab.ra30>=seq.sa], tab.ra30[tab.ra30>=seq.sa],col="green", lwd=3)
+par(new=T)
+plot(seq.sa[tab.ra10>=seq.sa], x.jk.ra10[tab.ra10>=seq.sa], type="l", col="blue", lty=2, axes=F, xlab=NA, ylab=NA, xlim=c(0, 30),xaxs="i",yaxs="i",ylim=c(0,8e+08))
+lines(seq.sa[tab.ra20>=seq.sa], x.jk.ra20[tab.ra20>=seq.sa], col="red", lty=2)
+lines(seq.sa[tab.ra30>=seq.sa], x.jk.ra30[tab.ra30>=seq.sa],col="green", lty=2)
+axis(side = 4)
+mtext(side = 4, line = 2, 'Cost')
+
+plot(seq.sa, seq.sf10, col="gray", type="l", xlab="Sa", ylab="Sf", mgp = c(2, 1, 0),
+     ylim=c(-20, 100), xlim=c(0, 30), xaxs="i", yaxs="i", main="Sf and Cost vs Sa", lwd=3)
+lines(seq.sa, seq.sf20,col="gray", lwd=3)
+lines(seq.sa, seq.sf30,col="gray", lwd=3)
+lines(seq.sa[tab.ra10>=seq.sa], seq.sf10[tab.ra10>=seq.sa],col="blue", lwd=3)
+lines(seq.sa[tab.ra20>=seq.sa], seq.sf20[tab.ra20>=seq.sa], col="red", lwd=3)
+lines(seq.sa[tab.ra30>=seq.sa], seq.sf30[tab.ra30>=seq.sa],col="green", lwd=3)
+par(new=T)
+plot(seq.sa[tab.ra10>=seq.sa], x.jk.ra10[tab.ra10>=seq.sa], col="blue", type="l", axes=F, xlab=NA, ylab=NA, cex=1, xlim=c(0, 30),xaxs="i", yaxs="i", lty=2, ylim=c(0,8e+08))
+lines(seq.sa[tab.ra20>=seq.sa], x.jk.ra20[tab.ra20>=seq.sa], col="red", lty=2)
+lines(seq.sa[tab.ra30>=seq.sa], x.jk.ra30[tab.ra30>=seq.sa],col="green", lty=2)
+axis(side = 4)
+mtext(side = 4, line = 2, 'Cost')
+
+
 #Making data frame
-inf_power <- data.frame(Sa=seq.sa,S.ra10=tab.ra10,Cost.ra10=x.jk.ra10,S.ra10=tab.ra20,Cost.ra20=x.jk.ra20,S.ra30=tab.ra30,Cost.ra30=x.jk.ra30)
+#inf_power <- data.frame(Sa=seq.sa,S.ra10=tab.ra10,Cost.ra10=x.jk.ra10,S.ra10=tab.ra20,Cost.ra20=x.jk.ra20,S.ra30=tab.ra30,Cost.ra30=x.jk.ra30)
 
 #ggplot time
-install.packages("ggplot2")
-install.packages("tidyverse")
+#install.packages("ggplot2")
+#install.packages("tidyverse")
 library(ggplot2)
 library(grid)
 library(tidyverse)
+
+costs <- data.frame(seq.sa,x.jk.ra10,x.jk.ra20,x.jk.ra30)
+
+min.cost.ra10 <- min(x.jk.ra10, na.rm=T)
+min.cost.ra20 <- min(x.jk.ra20, na.rm=T)
+min.cost.ra30 <- min(x.jk.ra30, na.rm=T)
 
 
 #Godwin code
@@ -121,13 +158,16 @@ designs <- tibble(
   cost=(costrecruitment + S*(costm) + costpt * r)* N / r,
   
   # revenue = (number of months on patent from start of trial - S) * (projected revenue per month)
-  # revenue.month = 200000 #(200M/month for bortezomib)
+  # revenue.month = 200,000,000 #(200M/month for bortezomib)
   # patent.months = 12*12 #bortezomib was approved by FDA in May 2003, synthesized 1995 = 8 years of 20 yr patent elapsed, still 12 years left
-  revenue = (200000000 - S)*12*12,
-  
+  revenue = 200000000*(12*12-S),
   profit = revenue - cost
-
 )
+
+mini.ra10 <- which(designs$cost == min.cost.ra10)
+mini.ra20 <- which(designs$cost == min.cost.ra20)
+mini.ra30 <- which(designs$cost == min.cost.ra30)
+
 
 mincost <- group_by(designs,ra) %>%
   
@@ -137,111 +177,136 @@ mincost <- group_by(designs,ra) %>%
 # revenue: 800k-8M lost per day of delay https://www.prnewswire.com/news-releases/clinical-trial-delays-cost-pharmaceutical-companies-55044607.html
 
 plot1 <- designs %>%
-  
   na.omit() %>%
-  
   filter(S<100 | cost<1e5) %>%
-  
   ggplot(aes(x=Sa,y=S)) +
-  
   geom_line(aes(color=factor(ra),lty=factor(Sf<0))) +
-  
   labs(color="accrual rate") +
-  
-  guides(lty=F)
-
+  guides(lty=F) +
+  geom_point(aes(x=designs$Sa[mini.ra10],y=designs$S[mini.ra10],colour="red"))+
+  geom_point(aes(x=designs$Sa[mini.ra20],y=designs$S[mini.ra20],colour="green"))+             
+  geom_point(aes(x=designs$Sa[mini.ra30],y=designs$S[mini.ra30],colour="blue"))                 
 
 
 plot2 <- designs %>%
-  
   na.omit() %>%
-  
   filter(S<100 | cost<1e5) %>%
-  
   ggplot(aes(x=Sa,y=cost)) +
-  
   geom_line(aes(color=factor(ra),lty=factor(Sf<0))) +
-  
   labs(color="accrual rate") +
-  
-  guides(lty=F)
-
+  guides(lty=F) +
+  geom_point(aes(x=designs$Sa[mini.ra10],y=designs$cost[mini.ra10],colour="red"))+
+  geom_point(aes(x=designs$Sa[mini.ra20],y=designs$cost[mini.ra20],colour="green"))+             
+  geom_point(aes(x=designs$Sa[mini.ra30],y=designs$cost[mini.ra30],colour="blue"))                 
 
 plot3 <- designs %>%
-  
   na.omit() %>%
-  
   filter(S<100 | cost<1e5) %>%
-  
   ggplot(aes(x=Sa,y=revenue)) +
-  
   geom_line(aes(color=factor(ra),lty=factor(Sf<0))) +
-  
   labs(color="accrual rate") +
-  
-  guides(lty=F)
+  guides(lty=F)+
+  geom_point(aes(x=designs$Sa[mini.ra10],y=designs$revenue[mini.ra10],colour="red"))+
+  geom_point(aes(x=designs$Sa[mini.ra20],y=designs$revenue[mini.ra20],colour="green"))+             
+  geom_point(aes(x=designs$Sa[mini.ra30],y=designs$revenue[mini.ra30],colour="blue"))   
 
 plot4 <- designs %>%
-  
   na.omit() %>%
-  
   filter(S<100 | cost<1e5) %>%
-  
   ggplot(aes(x=Sa,y=profit)) +
-  
   geom_line(aes(color=factor(ra),lty=factor(Sf<0))) +
-  
   labs(color="accrual rate") +
-  
-  guides(lty=F)
+  guides(lty=F)+
+  geom_point(aes(x=designs$Sa[mini.ra10],y=designs$profit[mini.ra10],colour="red"))+
+  geom_point(aes(x=designs$Sa[mini.ra20],y=designs$profit[mini.ra20],colour="green"))+             
+  geom_point(aes(x=designs$Sa[mini.ra30],y=designs$profit[mini.ra30],colour="blue"))   
 
 
 grid.newpage()
 
 grid.draw(rbind(ggplotGrob(plot1),
-                
                 ggplotGrob(plot2),
-                
+                ggplotGrob(plot3),
+                ggplotGrob(plot4),
                 size = "last"))
-
 
 
 install.packages("ggpubr")
 library(ggpubr)
 
 ggarrange(plot1,
-          
           plot2,
-          
           plot3,
-          
           plot4,
-          
           ncol=1,
-          
           nrow=4,
-          
           common.legend = TRUE,
-          
           legend="right")
 
-######
+#plug in numbers for onartuzumab phase III
+#HR = 0.71
+#control median survival = 3.8
+# trt median survival = 5.4
+# alpha = 0.05
+# power = .9
+# Sa = 19 months
+# ra = 29 pts/m
+#in Sa curve, 490 patients will correspond
+ra <- 29
+tab.on<-c()
 
-#example plotting with 2 y axes
-par(mar = c(5,5,2,5))
-with(d, plot(x, logp, type="l", col="red3", 
-             ylab=expression(-log[10](italic(p))),
-             ylim=c(0,3)))
+for(k in 1:length(seq.sa)){
+  tab.on <- c(tab.on, get_S(Sa = seq.sa[k], ra = ra, lambda1 = log(2)/14, lambda0 = log(2)/10, d=1))
+}
 
-par(new = T)
-with(d, plot(x, n, pch=16, axes=F, xlab=NA, ylab=NA, cex=1.2))
+seq.on <-  tab.on - seq.sa
+
+
+costpt <- 59500
+costm <- 8000*30
+costrecruitment <- 50000 #false -> was 50k for all sites combined in study. 5k?
+r <- 10
+seq.N.on <- seq.sa*ra
+
+
+#Total cost of study - Nick
+# x.jk <- (costrecruitment + S(costm) + costpt * r)*N/r
+
+x.jk.on<-c()
+for(k in 1:length(seq.sa)){
+  x.jk.on <- c(x.jk.on,(costrecruitment + tab.on[k]*(costm) + costpt * r)*seq.N.on[k]/r)
+}
+
+
+mini.on <- which(x.jk.on == min(x.jk.on, na.rm=T))
+seq.sa[mini.on]
+
+
+set.seed(2015-04-13)
+par(mfrow=c(1,2))
+plot(seq.sa, tab.on, type="l", col="gray", xlab="Sa", ylab="S", mgp = c(2, 1, 0),
+     ylim=c(-20, 100), xlim=c(0, 30),xaxs="i",yaxs="i", main="Onartzumab", lwd=3)
+lines(seq.sa[tab.on>=seq.sa], tab.on[tab.on>=seq.sa],col="blue", lwd=3)
+par(new=T)
+plot(seq.sa[tab.on>=seq.sa], x.jk.on[tab.on>=seq.sa], type="l", col="blue", lty=2, axes=F, xlab=NA, ylab=NA, xlim=c(0, 30),xaxs="i",yaxs="i",ylim=c(0,8e+08))
 axis(side = 4)
-mtext(side = 4, line = 3, 'Number genes selected')
-legend("topleft",
-       legend=c(expression(-log[10](italic(p))), "N genes"),
-       lty=c(1,0), pch=c(NA, 16), col=c("red3", "black"))
+mtext(side = 4, line = 2, 'Cost')
 
-###
+plot(seq.sa, seq.on, col="gray", type="l", xlab="Sa", ylab="Sf", mgp = c(2, 1, 0),
+     ylim=c(-20, 100), xlim=c(0, 30), xaxs="i", yaxs="i", main="Onartuzumab", lwd=3)
+lines(seq.sa[tab.on>=seq.sa], seq.on[tab.on>=seq.sa],col="blue", lwd=3)
+par(new=T)
+plot(seq.sa[tab.on>=seq.sa], x.jk.on[tab.on>=seq.sa], col="blue", type="l", axes=F, xlab=NA, ylab=NA, cex=1, xlim=c(0, 30),xaxs="i", yaxs="i", lty=2, ylim=c(0,8e+08))
+axis(side = 4)
+mtext(side = 4, line = 2, 'Cost')
+
+
+###################################################################################################################
+###################################################################################################################
+###################################################################################################################
+
+
+
 
 #original
 par(mfrow=c(1,2))
@@ -344,3 +409,5 @@ lines(seq.sa, dd.seq.sf30, col="green", lwd=3, type="p")
 lines(seq.sa[tab.ra10>=seq.sa], seq.sf10[tab.ra10>=seq.sa], col="blue", lwd=3)
 lines(seq.sa[tab.ra20>=seq.sa], seq.sf20[tab.ra20>=seq.sa], col="red", lwd=3)
 lines(seq.sa[tab.ra30>=seq.sa], seq.sf30[tab.ra30>=seq.sa],col="green", lwd=3)
+
+
