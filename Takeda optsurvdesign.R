@@ -206,7 +206,7 @@ grid.draw(rbind(ggplotGrob(plot1),
 
 
 
-#install.packages("ggpubr")
+install.packages("ggpubr")
 library(ggpubr)
 
 ggarrange(plot1,
